@@ -19,6 +19,7 @@ Projeto desenvolvido em grupo pelos alunos (as): Aryane, Letícia, Lucas e Rafae
 - Tailwind CSS 3
 - Axios
 
+
 ## Estrutura do Projeto
 
 ```
@@ -77,6 +78,7 @@ O Hibernate está configurado com `ddl-auto: update`, portanto as tabelas são c
 
 ## Como Executar
 
+
 ### 1. Backend
 
 ```bash
@@ -85,6 +87,7 @@ mvn spring-boot:run
 ```
 
 A API será iniciada em `http://localhost:8080`. Na primeira execução, o `DataSeeder` popula automaticamente o banco com usuários, veículos e aluguéis de exemplo.
+
 
 ### 2. Frontend
 
@@ -97,6 +100,7 @@ npm run dev
 O frontend será iniciado em `http://localhost:5173`.
 
 Ambos os serviços precisam estar rodando ao mesmo tempo para o sistema funcionar.
+
 
 ## Usuários Padrão (DataSeeder)
 
@@ -122,6 +126,7 @@ Ambos os serviços precisam estar rodando ao mesmo tempo para o sistema funciona
 - Histórico de aluguéis próprios
 - Edição de perfil pessoal
 
+
 ## Endpoints Principais da API
 
 | Método | Rota                        | Descrição                      |
@@ -134,6 +139,7 @@ Ambos os serviços precisam estar rodando ao mesmo tempo para o sistema funciona
 | POST   | /api/alugueis/{id}/devolver | Processar devolução            |
 | GET    | /api/dashboard              | Estatísticas (admin)           |
 | GET    | /api/relatorio              | Relatório de locações (admin)  |
+
 
 ## Observações
 
