@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Save, User } from 'lucide-react';
+import { ArrowLeft, Save, User, IdCard } from 'lucide-react';
 import AdminLayout from '../../components/layout/AdminLayout';
 import Button from '../../components/ui/Button';
 import Input, { Select } from '../../components/ui/Input';
 import { ToastContainer, useToast } from '../../components/ui/Toast';
 import { usuarioService } from '../../services/usuarioService';
-import { validarCPF, validarEmail, validarTelefone, formatarCPF, formatarTelefone } from '../../utils/validators';
+import { validarCPF, validarEmail, validarTelefone, validarCNH, formatarCPF, formatarTelefone, formatarCNH } from '../../utils/validators';
+
+const CATEGORIAS_CNH = ['', 'A', 'B', 'AB', 'C', 'D', 'E'];
 
 const INICIAL = {
   nome_completo: '', cpf: '', data_nascimento: '', telefone: '',
   email: '', senha: '', confirmar_senha: '', endereco: '', tipo: 'cliente',
+  numero_cnh: '', categoria_cnh: '', validade_cnh: '',
 };
 
 export default function UsuarioFormPage() {
@@ -45,6 +48,7 @@ export default function UsuarioFormPage() {
     else if (!validarTelefone(form.telefone)) e.telefone = 'Telefone inválido.';
     if (!form.email.trim()) e.email = 'E-mail é obrigatório.';
     else if (!validarEmail(form.email)) e.email = 'E-mail inválido.';
+    if (form.numero_cnh && !validarCNH(form.numero_cnh)) e.numero_cnh = 'CNH inválida (11 dígitos).';
     if (!isEdit) {
       if (!form.senha) e.senha = 'Senha é obrigatória.';
       else if (form.senha.length < 6) e.senha = 'Mínimo de 6 caracteres.';
@@ -121,6 +125,20 @@ export default function UsuarioFormPage() {
                 />
                 <Input id="email" label="E-mail" type="email" placeholder="email@exemplo.com" value={form.email} onChange={(e) => set('email', e.target.value)} error={erros.email} required />
                 <Input id="endereco" label="Endereço" placeholder="Rua, número — Cidade/UF" value={form.endereco} onChange={(e) => set('endereco', e.target.value)} className="sm:col-span-2" />
+              </div>
+            </div>
+
+            {/* Habilitação (CNH) — RF12 */}
+            <div className="p-6 rounded-2xl bg-gray-900/50 border border-white/5 space-y-4">
+              <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                <IdCard size={15} className="text-indigo-400" /> Habilitação (CNH)
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <Input id="numero_cnh" label="Número da CNH" placeholder="00000000000" value={form.numero_cnh || ''} onChange={(e) => set('numero_cnh', formatarCNH(e.target.value))} error={erros.numero_cnh} maxLength={11} helpText="11 dígitos (necessária para alugar)" />
+                <Select id="categoria_cnh" label="Categoria" value={form.categoria_cnh || ''} onChange={(e) => set('categoria_cnh', e.target.value)}>
+                  {CATEGORIAS_CNH.map((c) => <option key={c} value={c}>{c || '—'}</option>)}
+                </Select>
+                <Input id="validade_cnh" label="Validade" type="date" value={form.validade_cnh || ''} onChange={(e) => set('validade_cnh', e.target.value)} />
               </div>
             </div>
 

@@ -2,6 +2,7 @@ package com.rentcar.features.aluguel;
 
 import com.rentcar.features.aluguel.dto.AluguelRequest;
 import com.rentcar.features.aluguel.dto.AluguelResponse;
+import com.rentcar.features.aluguel.dto.DevolucaoRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,8 +43,9 @@ public class AluguelController {
 
     @PutMapping("/{id}/finalizar")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<AluguelResponse> finalizar(@PathVariable Long id) {
-        return ResponseEntity.ok(aluguelService.finalizar(id));
+    public ResponseEntity<AluguelResponse> finalizar(@PathVariable Long id,
+                                                     @RequestBody(required = false) DevolucaoRequest request) {
+        return ResponseEntity.ok(aluguelService.finalizar(id, request));
     }
 
     @PutMapping("/{id}/cancelar")

@@ -42,6 +42,21 @@ public class Aluguel {
     @Column(name = "finalizado_em")
     private LocalDateTime finalizadoEm;
 
+    // RF13: data real em que o veiculo foi devolvido (pode diferir da prevista)
+    @Column(name = "data_devolucao_real")
+    private LocalDate dataDevolucaoReal;
+
+    // RF13/RF14: numero de diarias efetivamente usadas, multa por atraso e valor
+    // final recalculado na devolucao
+    @Column(name = "dias_reais")
+    private Integer diasReais;
+
+    @Column(name = "multa_atraso", precision = 10, scale = 2)
+    private BigDecimal multaAtraso;
+
+    @Column(name = "valor_final", precision = 10, scale = 2)
+    private BigDecimal valorFinal;
+
     public Aluguel() {}
 
     public Long getId() { return id; }
@@ -70,4 +85,16 @@ public class Aluguel {
 
     public LocalDateTime getFinalizadoEm() { return finalizadoEm; }
     public void setFinalizadoEm(LocalDateTime finalizadoEm) { this.finalizadoEm = finalizadoEm; }
+
+    public LocalDate getDataDevolucaoReal() { return dataDevolucaoReal; }
+    public void setDataDevolucaoReal(LocalDate dataDevolucaoReal) { this.dataDevolucaoReal = dataDevolucaoReal; }
+
+    public Integer getDiasReais() { return diasReais; }
+    public void setDiasReais(Integer diasReais) { this.diasReais = diasReais; }
+
+    public BigDecimal getMultaAtraso() { return multaAtraso; }
+    public void setMultaAtraso(BigDecimal multaAtraso) { this.multaAtraso = multaAtraso; }
+
+    public BigDecimal getValorFinal() { return valorFinal; }
+    public void setValorFinal(BigDecimal valorFinal) { this.valorFinal = valorFinal; }
 }

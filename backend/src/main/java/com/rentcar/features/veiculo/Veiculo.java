@@ -36,6 +36,11 @@ public class Veiculo {
 
     private String imagem;
 
+    // RF06: manutencao e um estado manual definido pelo admin. Os demais estados
+    // (disponivel, locado, aguardando limpeza) sao derivados das datas dos alugueis.
+    @Column(name = "em_manutencao")
+    private Boolean emManutencao = false;
+
     public Veiculo() {}
 
     public Long getId() { return id; }
@@ -79,4 +84,7 @@ public class Veiculo {
 
     public String getImagem() { return imagem; }
     public void setImagem(String imagem) { this.imagem = imagem; }
+
+    public boolean isEmManutencao() { return emManutencao != null && emManutencao; }
+    public void setEmManutencao(Boolean emManutencao) { this.emManutencao = emManutencao; }
 }

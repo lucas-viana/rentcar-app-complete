@@ -33,6 +33,24 @@ export function validarTelefone(tel) {
   return raw.length >= 10 && raw.length <= 11;
 }
 
+// RF12: validação simulada da CNH — 11 dígitos numéricos, não todos iguais
+export function validarCNH(cnh) {
+  const raw = (cnh || '').replace(/\D/g, '');
+  return raw.length === 11 && !/^(\d)\1+$/.test(raw);
+}
+
+export function formatarCNH(cnh) {
+  return (cnh || '').replace(/\D/g, '').substring(0, 11);
+}
+
+// RF06: rótulos e cores dos status do veículo
+export const STATUS_VEICULO = {
+  disponivel: { label: 'Disponível', variant: 'success' },
+  locado: { label: 'Locado', variant: 'danger' },
+  aguardando_limpeza: { label: 'Aguardando Limpeza', variant: 'warning' },
+  manutencao: { label: 'Em Manutenção', variant: 'purple' },
+};
+
 // Converte 'YYYY-MM-DD' para Date no fuso local (new Date('YYYY-MM-DD') seria UTC,
 // o que faz a data de hoje parecer "ontem" em fusos negativos como o do Brasil)
 export function parseDataLocal(str) {

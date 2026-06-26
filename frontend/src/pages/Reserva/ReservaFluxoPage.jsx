@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Car, Calendar, CreditCard, CheckCircle, Fuel, Users, Activity } from 'lucide-react';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { ArrowLeft, ArrowRight, Calendar, CreditCard, CheckCircle, Fuel, Users, Activity, IdCard } from 'lucide-react';
 import ClienteLayout from '../../components/layout/ClienteLayout';
 import Button from '../../components/ui/Button';
 import Input, { Select } from '../../components/ui/Input';
+import CarImage from '../../components/ui/CarImage';
 import { ToastContainer, useToast } from '../../components/ui/Toast';
 import { veiculoService } from '../../services/veiculoService';
 import { aluguelService } from '../../services/aluguelService';
-import { validarDatas, formatarMoeda, diffDias, hojeISO } from '../../utils/validators';
+import { validarDatas, formatarMoeda, formatarData, diffDias, hojeISO } from '../../utils/validators';
 import { useAuth } from '../../contexts/AuthContext';
 
 const PAGAMENTOS = [
@@ -83,6 +84,8 @@ export default function ReservaFluxoPage() {
 
   const dias = form.data_retirada && form.data_entrega ? diffDias(form.data_retirada, form.data_entrega) : 0;
   const valorTotal = dias > 0 && veiculo ? dias * (veiculo.valor_diaria || 0) : 0;
+  // RF12: cliente precisa de CNH cadastrada para concluir a reserva
+  const semCnh = !usuario?.numero_cnh;
 
   function avancar() {
     if (step === 1) {
@@ -130,7 +133,7 @@ export default function ReservaFluxoPage() {
           <h1 className="text-3xl font-bold text-white mb-3">Reserva Confirmada!</h1>
           <p className="text-gray-400 mb-2">Seu <span className="text-white font-semibold">{veiculo.fabricante} {veiculo.modelo}</span> foi reservado com sucesso.</p>
           <p className="text-sm text-gray-500 mb-8">
-            {form.data_retirada} → {form.data_entrega} · {dias} dia{dias !== 1 ? 's' : ''} · {formatarMoeda(valorTotal)}
+            {formatarData(form.data_retirada)} → {formatarData(form.data_entrega)} · {dias} dia{dias !== 1 ? 's' : ''} · {formatarMoeda(valorTotal)}
           </p>
           <div className="flex gap-3 justify-center">
             <Button variant="ghost" onClick={() => navigate('/meus-alugueis')}>Ver Meus Aluguéis</Button>
@@ -161,10 +164,21 @@ export default function ReservaFluxoPage() {
           <StepIndicator step={step} />
         </div>
 
+        {/* CNH obrigatória (RF12) */}
+        {semCnh && (
+          <div className="flex items-start gap-3 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-sm">
+            <IdCard size={18} className="mt-0.5 shrink-0" />
+            <p>
+              Para concluir uma reserva você precisa cadastrar sua CNH.{' '}
+              <Link to="/perfil" className="underline font-semibold hover:text-amber-200">Completar meu perfil</Link>
+            </p>
+          </div>
+        )}
+
         {/* Vehicle Summary */}
         <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-900/50 border border-white/5">
-          <div className="w-14 h-14 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
-            <Car size={24} className="text-indigo-400" />
+          <div className="w-20 h-14 rounded-xl overflow-hidden border border-indigo-500/20 shrink-0 bg-gray-800">
+            <CarImage veiculo={veiculo} className="w-full h-full" iconSize={22} />
           </div>
           <div className="flex-1">
             <p className="font-bold text-white">{veiculo.fabricante} {veiculo.modelo}</p>
@@ -235,8 +249,8 @@ export default function ReservaFluxoPage() {
                 {[
                   { label: 'Veículo', value: `${veiculo.fabricante} ${veiculo.modelo} (${veiculo.placa})` },
                   { label: 'Cliente', value: usuario?.nome_completo },
-                  { label: 'Retirada', value: form.data_retirada },
-                  { label: 'Devolução', value: form.data_entrega },
+                  { label: 'Retirada', value: formatarData(form.data_retirada) },
+                  { label: 'Devolução', value: formatarData(form.data_entrega) },
                   { label: 'Duração', value: `${dias} dia${dias !== 1 ? 's' : ''}` },
                   { label: 'Pagamento', value: PAGAMENTOS.find((p) => p.value === form.forma_pagamento)?.label },
                 ].map((row) => (
@@ -252,8 +266,8 @@ export default function ReservaFluxoPage() {
               </div>
               <div className="flex gap-3">
                 <Button variant="ghost" onClick={() => setStep(2)}><ArrowLeft size={16} /> Voltar</Button>
-                <Button fullWidth variant="amber" loading={submitting} onClick={confirmar}>
-                  <CheckCircle size={16} /> Confirmar Reserva
+                <Button fullWidth variant="amber" loading={submitting} disabled={semCnh} onClick={confirmar}>
+                  <CheckCircle size={16} /> {semCnh ? 'Cadastre sua CNH para reservar' : 'Confirmar Reserva'}
                 </Button>
               </div>
             </div>

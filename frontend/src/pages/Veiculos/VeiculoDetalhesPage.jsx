@@ -5,8 +5,9 @@ import AdminLayout from '../../components/layout/AdminLayout';
 import ClienteLayout from '../../components/layout/ClienteLayout';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
+import CarImage from '../../components/ui/CarImage';
 import { veiculoService } from '../../services/veiculoService';
-import { formatarMoeda } from '../../utils/validators';
+import { formatarMoeda, STATUS_VEICULO } from '../../utils/validators';
 import { useAuth } from '../../contexts/AuthContext';
 
 function InfoChip({ icon: Icon, label, value }) {
@@ -38,6 +39,7 @@ export default function VeiculoDetalhesPage() {
 
   const Layout = isAdmin ? AdminLayout : ClienteLayout;
   const voltarUrl = isAdmin ? '/veiculos' : '/frota';
+  const statusInfo = veiculo ? (STATUS_VEICULO[veiculo.status] || { label: '—', variant: 'default' }) : null;
 
   if (loading) {
     return (
@@ -62,10 +64,7 @@ export default function VeiculoDetalhesPage() {
             <p className="text-gray-400 text-sm">{veiculo.fabricante} · {veiculo.ano}</p>
           </div>
           <div className="flex items-center gap-2">
-            {veiculo.disponivel
-              ? <Badge variant="success">Disponível</Badge>
-              : <Badge variant="danger">Alugado</Badge>
-            }
+            <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>
           </div>
         </div>
 
@@ -76,8 +75,8 @@ export default function VeiculoDetalhesPage() {
             <div className="absolute -left-16 -bottom-16 w-48 h-48 bg-purple-600/10 rounded-full blur-3xl" />
           </div>
           <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-6">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-600/30 to-purple-600/30 border border-indigo-500/30 flex items-center justify-center">
-              <Car size={36} className="text-indigo-400" />
+            <div className="w-44 h-28 rounded-2xl overflow-hidden border border-indigo-500/30 shrink-0 bg-gray-900/40">
+              <CarImage veiculo={veiculo} className="w-full h-full" iconSize={40} />
             </div>
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-white">{veiculo.fabricante} {veiculo.modelo}</h2>
@@ -104,10 +103,17 @@ export default function VeiculoDetalhesPage() {
           <InfoChip icon={Gauge} label="Km rodados" value={`${(veiculo.km || 0).toLocaleString('pt-BR')} km`} />
         </div>
 
-        {/* Aviso para veículo alugado hoje — reservas futuras continuam possíveis */}
-        {!veiculo.disponivel && (
+        {/* Aviso conforme o status atual do veículo (RF06) */}
+        {veiculo.status === 'manutencao' && (
+          <div className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/20 text-center text-purple-300 text-sm font-medium">
+            Veículo em manutenção — temporariamente indisponível para locação.
+          </div>
+        )}
+        {(veiculo.status === 'locado' || veiculo.status === 'aguardando_limpeza') && (
           <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-center text-amber-400 text-sm font-medium">
-            Veículo alugado no momento — disponível para reservas em datas futuras
+            {veiculo.status === 'locado'
+              ? 'Veículo locado no momento'
+              : 'Veículo em preparação (aguardando limpeza)'} — disponível para reservas em datas futuras
             (com intervalo de 1 dia após cada devolução).
           </div>
         )}

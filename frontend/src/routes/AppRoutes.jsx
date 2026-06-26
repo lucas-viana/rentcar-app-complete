@@ -15,6 +15,10 @@ import AluguelFormPage from '../pages/Alugueis/AluguelFormPage';
 import FrotaClientePage from '../pages/Frota/FrotaClientePage';
 import ReservaFluxoPage from '../pages/Reserva/ReservaFluxoPage';
 import MeusAlugueisPage from '../pages/MeusAlugueis/MeusAlugueisPage';
+import PerfilPage from '../pages/Perfil/PerfilPage';
+import RelatoriosPage from '../pages/Relatorios/RelatoriosPage';
+import RecuperarSenhaPage from '../pages/Senha/RecuperarSenhaPage';
+import RedefinirSenhaPage from '../pages/Senha/RedefinirSenhaPage';
 import NotFoundPage from '../pages/NotFound/NotFoundPage';
 
 function HomeRedirect() {
@@ -28,6 +32,8 @@ export default function AppRoutes() {
     <Routes>
       {/* Public */}
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/recuperar-senha" element={<RecuperarSenhaPage />} />
+      <Route path="/redefinir-senha" element={<RedefinirSenhaPage />} />
       <Route path="/" element={<HomeRedirect />} />
 
       {/* ADMIN Only */}
@@ -41,6 +47,7 @@ export default function AppRoutes() {
         <Route path="/usuarios/:id/editar" element={<UsuarioFormPage />} />
         <Route path="/alugueis" element={<AlugueisPage />} />
         <Route path="/alugueis/novo" element={<AluguelFormPage />} />
+        <Route path="/relatorios" element={<RelatoriosPage />} />
       </Route>
 
       {/* Client + Admin (shared) */}
@@ -49,6 +56,7 @@ export default function AppRoutes() {
         <Route path="/veiculos/:id" element={<VeiculoDetalhesPage />} />
         <Route path="/reservar/:id" element={<ReservaFluxoPage />} />
         <Route path="/meus-alugueis" element={<MeusAlugueisPage />} />
+        <Route path="/perfil" element={<PerfilPage />} />
       </Route>
 
       {/* 404 */}

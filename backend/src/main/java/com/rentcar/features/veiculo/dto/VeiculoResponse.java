@@ -18,15 +18,19 @@ public record VeiculoResponse(
     Integer passageiros,
     Integer km,
     Boolean disponivel,
+    Boolean emManutencao,
+    String status,
     BigDecimal valorDiaria,
     String imagem
 ) {
-    public static VeiculoResponse from(Veiculo v, boolean disponivel) {
+    // RF06: status calculado para hoje — "disponivel", "locado",
+    // "aguardando_limpeza" ou "manutencao".
+    public static VeiculoResponse from(Veiculo v, boolean disponivel, String status) {
         return new VeiculoResponse(
             v.getId(), v.getModelo(), v.getFabricante(), v.getAno(), v.getPlaca(),
             v.getCor(), v.getCategoria(), v.getCombustivel(), v.getCambio(),
             v.getPortas(), v.getPassageiros(), v.getKm(), disponivel,
-            v.getValorDiaria(), v.getImagem()
+            v.isEmManutencao(), status, v.getValorDiaria(), v.getImagem()
         );
     }
 }

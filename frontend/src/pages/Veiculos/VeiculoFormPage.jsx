@@ -4,6 +4,7 @@ import { ArrowLeft, Car, Save } from 'lucide-react';
 import AdminLayout from '../../components/layout/AdminLayout';
 import Button from '../../components/ui/Button';
 import Input, { Select } from '../../components/ui/Input';
+import CarImage from '../../components/ui/CarImage';
 import { ToastContainer, useToast } from '../../components/ui/Toast';
 import { veiculoService } from '../../services/veiculoService';
 import { validarPlaca, formatarPlaca } from '../../utils/validators';
@@ -15,7 +16,7 @@ const COMBUSTIVEIS = ['Flex', 'Gasolina', 'Diesel', 'Elétrico', 'Híbrido'];
 const INICIAL = {
   modelo: '', fabricante: '', cor: '', placa: '', ano: new Date().getFullYear(),
   categoria: 'Econômico', cambio: 'Manual', combustivel: 'Flex',
-  portas: 4, passageiros: 5, km: 0, valor_diaria: '', disponivel: true,
+  portas: 4, passageiros: 5, km: 0, valor_diaria: '', imagem: '', em_manutencao: false,
 };
 
 export default function VeiculoFormPage() {
@@ -119,6 +120,12 @@ export default function VeiculoFormPage() {
                 />
                 <Input id="cor" label="Cor" placeholder="Ex: Prata" value={form.cor} onChange={(e) => set('cor', e.target.value)} error={erros.cor} required />
               </div>
+              <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-4 items-end">
+                <Input id="imagem" label="Imagem (URL)" placeholder="https://..." value={form.imagem || ''} onChange={(e) => set('imagem', e.target.value)} helpText="Cole o link de uma foto do veículo (opcional — usa um ícone se vazio)" />
+                <div className="w-28 h-20 rounded-xl overflow-hidden border border-white/10 bg-gray-800 shrink-0">
+                  <CarImage veiculo={form} className="w-full h-full" iconSize={24} />
+                </div>
+              </div>
             </div>
 
             {/* Características */}
@@ -146,12 +153,10 @@ export default function VeiculoFormPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <Input id="valor_diaria" label="Diária (R$)" type="number" step="0.01" min="0" placeholder="0.00" value={form.valor_diaria} onChange={(e) => set('valor_diaria', e.target.value)} error={erros.valor_diaria} required />
                 <Input id="km" label="Quilometragem" type="number" min="0" value={form.km} onChange={(e) => set('km', e.target.value)} />
-                {isEdit && (
-                  <Select id="disponivel" label="Disponibilidade" value={String(form.disponivel)} onChange={(e) => set('disponivel', e.target.value === 'true')}>
-                    <option value="true">Disponível</option>
-                    <option value="false">Alugado</option>
-                  </Select>
-                )}
+                <Select id="em_manutencao" label="Status operacional" value={String(form.em_manutencao)} onChange={(e) => set('em_manutencao', e.target.value === 'true')} helpText="Em manutenção: o veículo não aparece para locação">
+                  <option value="false">Operacional</option>
+                  <option value="true">Em manutenção</option>
+                </Select>
               </div>
             </div>
 

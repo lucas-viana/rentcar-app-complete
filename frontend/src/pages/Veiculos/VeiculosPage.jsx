@@ -4,12 +4,18 @@ import { Plus, Search, Pencil, Trash2, Eye, Car, Filter } from 'lucide-react';
 import AdminLayout from '../../components/layout/AdminLayout';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
+import CarImage from '../../components/ui/CarImage';
 import { ConfirmModal } from '../../components/ui/Modal';
 import { ToastContainer, useToast } from '../../components/ui/Toast';
 import { veiculoService } from '../../services/veiculoService';
-import { formatarMoeda } from '../../utils/validators';
+import { formatarMoeda, STATUS_VEICULO } from '../../utils/validators';
 
 const CATEGORIAS = ['Todos', 'Econômico', 'SUV', 'Sedan', 'Picape'];
+
+function StatusVeiculoBadge({ status }) {
+  const s = STATUS_VEICULO[status] || { label: '—', variant: 'default' };
+  return <Badge variant={s.variant}>{s.label}</Badge>;
+}
 
 export default function VeiculosPage() {
   const [veiculos, setVeiculos] = useState([]);
@@ -141,8 +147,8 @@ export default function VeiculosPage() {
                     <tr key={v.id} className="hover:bg-white/3 transition-colors group">
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center shrink-0">
-                            <Car size={16} className="text-indigo-400" />
+                          <div className="w-14 h-10 rounded-lg overflow-hidden border border-white/10 shrink-0 bg-gray-800">
+                            <CarImage veiculo={v} className="w-full h-full" iconSize={16} />
                           </div>
                           <div>
                             <p className="text-sm font-semibold text-white">{v.modelo}</p>
@@ -160,10 +166,7 @@ export default function VeiculosPage() {
                         <span className="text-sm font-semibold text-emerald-400">{formatarMoeda(v.valor_diaria || 0)}</span>
                       </td>
                       <td className="px-5 py-4">
-                        {v.disponivel
-                          ? <Badge variant="success">Disponível</Badge>
-                          : <Badge variant="danger">Alugado</Badge>
-                        }
+                        <StatusVeiculoBadge status={v.status} />
                       </td>
                       <td className="px-5 py-4">
                         <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">

@@ -15,6 +15,16 @@ export const authService = {
     return data;
   },
 
+  async recuperarSenha(email) {
+    const { data } = await api.post('/auth/recuperar-senha', { email });
+    return data;
+  },
+
+  async redefinirSenha(token, novaSenha) {
+    const { data } = await api.post('/auth/redefinir-senha', { token, nova_senha: novaSenha });
+    return data;
+  },
+
   logout() {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('auth_user');

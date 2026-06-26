@@ -14,6 +14,10 @@ public record AluguelResponse(
     BigDecimal valorTotal,
     String status,
     String finalizadoEm,
+    String dataDevolucaoReal,
+    Integer diasReais,
+    BigDecimal multaAtraso,
+    BigDecimal valorFinal,
     String usuario,
     String veiculo,
     String placa
@@ -29,6 +33,10 @@ public record AluguelResponse(
             a.getValorTotal(),
             a.getStatus().getValue(),
             a.getFinalizadoEm() != null ? a.getFinalizadoEm().toString() : null,
+            a.getDataDevolucaoReal() != null ? a.getDataDevolucaoReal().toString() : null,
+            a.getDiasReais(),
+            a.getMultaAtraso(),
+            a.getValorFinal(),
             a.getUsuario().getNomeCompleto(),
             a.getVeiculo().getModelo(),
             a.getVeiculo().getPlaca()

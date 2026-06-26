@@ -21,8 +21,9 @@ export const aluguelService = {
     return data;
   },
 
-  async finalizar(id) {
-    const { data } = await api.put(`/alugueis/${id}/finalizar`);
+  async finalizar(id, dataDevolucaoReal) {
+    const { data } = await api.put(`/alugueis/${id}/finalizar`,
+      dataDevolucaoReal ? { data_devolucao_real: dataDevolucaoReal } : {});
     return data;
   },
 

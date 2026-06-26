@@ -4,6 +4,7 @@ import { Car, Search, Fuel, Users, Activity, Calendar } from 'lucide-react';
 import ClienteLayout from '../../components/layout/ClienteLayout';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
+import CarImage from '../../components/ui/CarImage';
 import { veiculoService } from '../../services/veiculoService';
 import { formatarMoeda, formatarData, hojeISO, validarDatas, diffDias } from '../../utils/validators';
 
@@ -22,14 +23,9 @@ function VeiculoCard({ veiculo, retirada, devolucao, dias }) {
       className="group block rounded-2xl border bg-gray-900 border-white/10 transition-all duration-300 overflow-hidden
         hover:-translate-y-1 hover:shadow-2xl hover:border-indigo-500/40 hover:shadow-indigo-500/10"
     >
-      {/* Car Visual */}
-      <div className="relative h-40 flex items-center justify-center bg-gradient-to-br from-indigo-900/40 to-gray-900">
-        <div className="absolute inset-0 transition-opacity duration-300 group-hover:opacity-100 opacity-70">
-          <div className="absolute -right-8 -top-8 w-40 h-40 bg-indigo-600/5 rounded-full blur-2xl" />
-        </div>
-        <div className="relative w-20 h-20 rounded-2xl flex items-center justify-center bg-gradient-to-br from-indigo-600/20 to-purple-600/20 border border-indigo-500/30">
-          <Car size={36} className="text-indigo-400" />
-        </div>
+      {/* Foto real do veículo */}
+      <div className="relative h-40 overflow-hidden bg-gradient-to-br from-indigo-900/40 to-gray-900">
+        <CarImage veiculo={veiculo} className="w-full h-full transition-transform duration-300 group-hover:scale-105" iconSize={44} />
 
         <div className="absolute top-3 right-3">
           <Badge variant="success">Disponível no período</Badge>

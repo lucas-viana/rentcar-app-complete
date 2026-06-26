@@ -25,4 +25,11 @@ public interface AluguelRepository extends JpaRepository<Aluguel, Long> {
     List<Long> findVeiculoIdsOcupados(@Param("status") StatusAluguel status,
                                        @Param("inicioJanela") LocalDate inicioJanela,
                                        @Param("fimJanela") LocalDate fimJanela);
+
+    // RF06: veiculos efetivamente locados num dia especifico (retirada <= dia <= entrega).
+    // Diferente do buffer: aqui o veiculo esta de fato com o cliente nesse dia.
+    @Query("SELECT DISTINCT a.veiculo.id FROM Aluguel a WHERE a.status = :status " +
+           "AND a.dataRetirada <= :dia AND a.dataEntrega >= :dia")
+    List<Long> findVeiculoIdsLocadosNoDia(@Param("status") StatusAluguel status,
+                                          @Param("dia") LocalDate dia);
 }

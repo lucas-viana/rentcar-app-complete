@@ -26,12 +26,18 @@ export function AuthProvider({ children }) {
     setUsuario(null);
   }
 
+  // Atualiza o usuário em memória e no localStorage (ex.: após editar o perfil)
+  function atualizarUsuario(novoUsuario) {
+    localStorage.setItem('auth_user', JSON.stringify(novoUsuario));
+    setUsuario(novoUsuario);
+  }
+
   const isAdmin = usuario?.tipo === 'admin';
   const isCliente = usuario?.tipo === 'cliente';
   const isAutenticado = !!usuario;
 
   return (
-    <AuthContext.Provider value={{ usuario, login, logout, isAdmin, isCliente, isAutenticado, carregando }}>
+    <AuthContext.Provider value={{ usuario, login, logout, atualizarUsuario, isAdmin, isCliente, isAutenticado, carregando }}>
       {children}
     </AuthContext.Provider>
   );

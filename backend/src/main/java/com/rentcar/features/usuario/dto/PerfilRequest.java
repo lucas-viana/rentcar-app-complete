@@ -3,7 +3,11 @@ package com.rentcar.features.usuario.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public record UsuarioRequest(
+/**
+ * RF04: dados que o proprio cliente pode atualizar no seu perfil. CPF, tipo de
+ * perfil e data de nascimento nao sao editaveis pelo cliente.
+ */
+public record PerfilRequest(
     @NotBlank(message = "Nome completo e obrigatorio")
     String nomeCompleto,
 
@@ -11,15 +15,11 @@ public record UsuarioRequest(
     @Email(message = "E-mail invalido")
     String email,
 
-    @NotBlank(message = "CPF e obrigatorio")
-    String cpf,
-
-    String dataNascimento,
     String telefone,
     String endereco,
     String numeroCnh,
     String categoriaCnh,
     String validadeCnh,
-    String tipo,
-    String senha
+    String senhaAtual,
+    String novaSenha
 ) {}

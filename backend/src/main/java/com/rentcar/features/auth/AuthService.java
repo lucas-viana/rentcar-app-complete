@@ -6,6 +6,9 @@ import com.rentcar.common.security.JwtTokenProvider;
 import com.rentcar.common.validation.CpfValidator;
 import com.rentcar.features.auth.dto.LoginRequest;
 import com.rentcar.features.auth.dto.LoginResponse;
+import com.rentcar.features.auth.dto.RecuperarSenhaRequest;
+import com.rentcar.features.auth.dto.RecuperarSenhaResponse;
+import com.rentcar.features.auth.dto.RedefinirSenhaRequest;
 import com.rentcar.features.auth.dto.RegisterRequest;
 import com.rentcar.features.usuario.TipoUsuario;
 import com.rentcar.features.usuario.Usuario;
@@ -20,8 +23,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -80,6 +85,38 @@ public class AuthService {
         CustomUserDetails userDetails = new CustomUserDetails(usuario);
         String token = jwtTokenProvider.generateToken(userDetails);
         return new LoginResponse(token, UsuarioResponse.from(usuario));
+    }
+
+    // RF03: gera um token de redefinicao e "envia" por e-mail (simulado: o link
+    // e retornado na resposta para permitir o teste do fluxo no trabalho).
+    public RecuperarSenhaResponse recuperarSenha(RecuperarSenhaRequest request) {
+        Usuario usuario = usuarioRepository.findByEmail(request.email())
+                .orElseThrow(() -> new BusinessException("Nenhuma conta encontrada com este e-mail", HttpStatus.NOT_FOUND));
+
+        String token = UUID.randomUUID().toString();
+        usuario.setResetToken(token);
+        usuario.setResetTokenExpira(LocalDateTime.now().plusMinutes(30));
+        usuarioRepository.save(usuario);
+
+        return new RecuperarSenhaResponse(
+                "Link de redefinicao gerado. Em um sistema real ele seria enviado para " + usuario.getEmail() + ".",
+                "/redefinir-senha?token=" + token,
+                token);
+    }
+
+    // RF03: valida o token (existencia + expiracao) e troca a senha
+    public void redefinirSenha(RedefinirSenhaRequest request) {
+        Usuario usuario = usuarioRepository.findByResetToken(request.token())
+                .orElseThrow(() -> new BusinessException("Token invalido ou ja utilizado"));
+
+        if (usuario.getResetTokenExpira() == null || usuario.getResetTokenExpira().isBefore(LocalDateTime.now())) {
+            throw new BusinessException("Token expirado. Solicite um novo link de redefinicao");
+        }
+
+        usuario.setSenha(passwordEncoder.encode(request.novaSenha()));
+        usuario.setResetToken(null);
+        usuario.setResetTokenExpira(null);
+        usuarioRepository.save(usuario);
     }
 
     private LocalDate parseDataNascimento(String valor) {

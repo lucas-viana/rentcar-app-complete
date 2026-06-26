@@ -6,6 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 const NAV_ITEMS = [
   { to: '/frota', label: 'Frota', icon: Car },
   { to: '/meus-alugueis', label: 'Meus Aluguéis', icon: FileText },
+  { to: '/perfil', label: 'Meu Perfil', icon: User },
 ];
 
 export default function ClienteLayout({ children }) {

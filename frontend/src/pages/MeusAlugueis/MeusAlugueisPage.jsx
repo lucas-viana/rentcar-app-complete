@@ -106,7 +106,12 @@ export default function MeusAlugueisPage() {
                 <XCircle size={13} /> Cancelar
               </button>
             )}
-            <p className="text-base font-bold text-emerald-400">{formatarMoeda(aluguel.valor_total || 0)}</p>
+            <div className="text-right">
+              <p className="text-base font-bold text-emerald-400">{formatarMoeda(aluguel.valor_final ?? aluguel.valor_total ?? 0)}</p>
+              {aluguel.multa_atraso > 0 && (
+                <p className="text-[11px] text-amber-400">inclui multa {formatarMoeda(aluguel.multa_atraso)}</p>
+              )}
+            </div>
           </div>
         </div>
       </div>

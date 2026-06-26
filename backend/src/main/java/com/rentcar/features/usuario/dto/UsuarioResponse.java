@@ -10,6 +10,9 @@ public record UsuarioResponse(
     String dataNascimento,
     String telefone,
     String endereco,
+    String numeroCnh,
+    String categoriaCnh,
+    String validadeCnh,
     String tipo
 ) {
     public static UsuarioResponse from(Usuario usuario) {
@@ -21,6 +24,9 @@ public record UsuarioResponse(
             usuario.getDataNascimento() != null ? usuario.getDataNascimento().toString() : null,
             usuario.getTelefone(),
             usuario.getEndereco(),
+            usuario.getNumeroCnh(),
+            usuario.getCategoriaCnh(),
+            usuario.getValidadeCnh() != null ? usuario.getValidadeCnh().toString() : null,
             usuario.getTipo().getValue()
         );
     }

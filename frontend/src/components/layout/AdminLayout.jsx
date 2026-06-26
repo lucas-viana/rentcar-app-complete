@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Car, Users, FileText, LogOut, Menu, X,
-  ChevronRight, Shield, Settings
+  ChevronRight, Shield, Settings, BarChart3
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { to: '/veiculos', icon: Car, label: 'Frota' },
   { to: '/usuarios', icon: Users, label: 'Usuários' },
   { to: '/alugueis', icon: FileText, label: 'Locações' },
+  { to: '/relatorios', icon: BarChart3, label: 'Relatórios' },
 ];
 
 function NavItem({ to, icon: Icon, label, onClick }) {

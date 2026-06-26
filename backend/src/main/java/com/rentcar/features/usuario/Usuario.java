@@ -2,6 +2,7 @@ package com.rentcar.features.usuario;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "usuarios")
@@ -26,12 +27,29 @@ public class Usuario {
     private String telefone;
     private String endereco;
 
+    // RF12: dados da CNH usados para validar a habilitacao do condutor na reserva
+    @Column(name = "numero_cnh")
+    private String numeroCnh;
+
+    @Column(name = "categoria_cnh")
+    private String categoriaCnh;
+
+    @Column(name = "validade_cnh")
+    private LocalDate validadeCnh;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TipoUsuario tipo;
 
     @Column(nullable = false)
     private String senha;
+
+    // RF03: token temporario de redefinicao de senha
+    @Column(name = "reset_token")
+    private String resetToken;
+
+    @Column(name = "reset_token_expira")
+    private LocalDateTime resetTokenExpira;
 
     public Usuario() {}
 
@@ -56,9 +74,24 @@ public class Usuario {
     public String getEndereco() { return endereco; }
     public void setEndereco(String endereco) { this.endereco = endereco; }
 
+    public String getNumeroCnh() { return numeroCnh; }
+    public void setNumeroCnh(String numeroCnh) { this.numeroCnh = numeroCnh; }
+
+    public String getCategoriaCnh() { return categoriaCnh; }
+    public void setCategoriaCnh(String categoriaCnh) { this.categoriaCnh = categoriaCnh; }
+
+    public LocalDate getValidadeCnh() { return validadeCnh; }
+    public void setValidadeCnh(LocalDate validadeCnh) { this.validadeCnh = validadeCnh; }
+
     public TipoUsuario getTipo() { return tipo; }
     public void setTipo(TipoUsuario tipo) { this.tipo = tipo; }
 
     public String getSenha() { return senha; }
     public void setSenha(String senha) { this.senha = senha; }
+
+    public String getResetToken() { return resetToken; }
+    public void setResetToken(String resetToken) { this.resetToken = resetToken; }
+
+    public LocalDateTime getResetTokenExpira() { return resetTokenExpira; }
+    public void setResetTokenExpira(LocalDateTime resetTokenExpira) { this.resetTokenExpira = resetTokenExpira; }
 }

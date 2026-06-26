@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Car, Eye, EyeOff, LogIn, Shield, User } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import Button from '../../components/ui/Button';
@@ -201,6 +201,12 @@ export default function LoginPage() {
                 </button>
               </div>
               {erros.senha && <p className="text-xs text-red-400">{erros.senha}</p>}
+            </div>
+
+            <div className="flex justify-end -mt-1">
+              <Link to="/recuperar-senha" className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">
+                Esqueci minha senha
+              </Link>
             </div>
 
             <Button type="submit" fullWidth loading={loading} size="lg" className="mt-2">

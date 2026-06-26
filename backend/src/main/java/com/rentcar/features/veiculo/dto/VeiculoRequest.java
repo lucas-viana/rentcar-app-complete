@@ -46,5 +46,7 @@ public record VeiculoRequest(
     @Positive(message = "Valor da diaria deve ser maior que zero")
     BigDecimal valorDiaria,
 
-    String imagem
+    String imagem,
+
+    Boolean emManutencao
 ) {}
