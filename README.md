@@ -1,8 +1,8 @@
-# RentCar - Sistema de Locacao de Veiculos
+# RentCar - Sistema de Locação de Veículos
 
-Sistema web completo para gerenciamento de locadoras de veiculos, desenvolvido como projeto academico da disciplina de Projeto e Desenvolvimento de Software ministrada pelo Prof. Drº Matheus Guedes, durante o 7º período da Graduação em Sistemas de Informação. Permite o controle de frota, cadastro de clientes, registro de alugueis e acompanhamento de devolucoes com calculo automatico de multas por atraso.
+Sistema web completo para gerenciamento de locadoras de veículos, desenvolvido como projeto acadêmico da disciplina de Projeto e Desenvolvimento de Software ministrada pelo Prof. Drº Matheus Guedes, durante o 7º período da Graduação em Sistemas de Informação. Permite o controle de frota, cadastro de clientes, registro de aluguéis e acompanhamento de devoluções com cálculo automático de multas por atraso.
 
-Projeto desenvolvido em grupo pelos alunos (as): Aryane, Letícia, Lucas e Rafael. 
+Projeto desenvolvido em grupo pelos alunos (as): Aryane, Letícia, Lucas e Rafael.
 
 ## Tecnologias
 
@@ -10,7 +10,7 @@ Projeto desenvolvido em grupo pelos alunos (as): Aryane, Letícia, Lucas e Rafae
 - Java 17+
 - Spring Boot 3.3.5 (Web, Data JPA, Security, Validation)
 - PostgreSQL 15+
-- JWT para autenticacao (jjwt 0.12.6)
+- JWT para autenticação (jjwt 0.12.6)
 - Maven 3.6+
 
 **Frontend**
@@ -26,27 +26,27 @@ rentcar-app-complete/
 ├── backend/          # API REST Spring Boot
 │   ├── src/main/java/com/rentcar/
 │   │   ├── features/
-│   │   │   ├── aluguel/       # Gestao de locacoes e devolucoes
-│   │   │   ├── auth/          # Login, registro e recuperacao de senha
-│   │   │   ├── dashboard/     # Estatisticas e resumos
-│   │   │   ├── relatorio/     # Relatorios de alugueis
-│   │   │   ├── usuario/       # Cadastro e perfil de usuarios
+│   │   │   ├── aluguel/       # Gestão de locações e devoluções
+│   │   │   ├── auth/          # Login, registro e recuperação de senha
+│   │   │   ├── dashboard/     # Estatísticas e resumos
+│   │   │   ├── relatorio/     # Relatórios de aluguéis
+│   │   │   ├── usuario/       # Cadastro e perfil de usuários
 │   │   │   └── veiculo/       # Cadastro e controle de frota
 │   │   └── DataSeeder.java    # Carga inicial de dados
 │   └── src/main/resources/
-│       └── application.yml    # Configuracoes da aplicacao
+│       └── application.yml    # Configurações da aplicação
 └── frontend/         # SPA React
     └── src/
 ```
 
-## Pre-requisitos
+## Pré-requisitos
 
 - Java 17 ou superior
 - Maven 3.6 ou superior
 - Node.js 18 ou superior com npm
-- PostgreSQL 15 ou superior em execucao na porta 5432
+- PostgreSQL 15 ou superior em execução na porta 5432
 
-## Configuracao do Banco de Dados
+## Configuração do Banco de Dados
 
 Crie o banco de dados antes de iniciar o backend:
 
@@ -54,14 +54,14 @@ Crie o banco de dados antes de iniciar o backend:
 CREATE DATABASE rentcar;
 ```
 
-As credenciais padrao esperadas pelo `application.yml` sao:
+As credenciais padrão esperadas pelo `application.yml` são:
 
-| Parametro | Valor           |
-|-----------|-----------------|
-| Host      | localhost:5432  |
-| Banco     | rentcar         |
-| Usuario   | postgres        |
-| Senha     | 353742Ap$       |
+| Parâmetro | Valor          |
+|-----------|----------------|
+| Host      | localhost:5432 |
+| Banco     | rentcar        |
+| Usuário   | postgres       |
+| Senha     | 353742Ap$      |
 
 Para usar credenciais diferentes, edite o arquivo `backend/src/main/resources/application.yml`:
 
@@ -73,7 +73,7 @@ spring:
     password: sua_senha
 ```
 
-O Hibernate esta configurado com `ddl-auto: update`, portanto as tabelas sao criadas automaticamente na primeira execucao.
+O Hibernate está configurado com `ddl-auto: update`, portanto as tabelas são criadas automaticamente na primeira execução.
 
 ## Como Executar
 
@@ -84,7 +84,7 @@ cd backend
 mvn spring-boot:run
 ```
 
-A API sera iniciada em `http://localhost:8080`. Na primeira execucao, o `DataSeeder` popula automaticamente o banco com usuarios, veiculos e alugueis de exemplo.
+A API será iniciada em `http://localhost:8080`. Na primeira execução, o `DataSeeder` popula automaticamente o banco com usuários, veículos e aluguéis de exemplo.
 
 ### 2. Frontend
 
@@ -94,11 +94,11 @@ npm install
 npm run dev
 ```
 
-O frontend sera iniciado em `http://localhost:5173`.
+O frontend será iniciado em `http://localhost:5173`.
 
-Ambos os servicos precisam estar rodando ao mesmo tempo para o sistema funcionar.
+Ambos os serviços precisam estar rodando ao mesmo tempo para o sistema funcionar.
 
-## Usuarios Padrao (DataSeeder)
+## Usuários Padrão (DataSeeder)
 
 | Perfil  | E-mail               | Senha      |
 |---------|----------------------|------------|
@@ -110,33 +110,33 @@ Ambos os servicos precisam estar rodando ao mesmo tempo para o sistema funcionar
 ## Funcionalidades
 
 **Perfil Admin**
-- Dashboard com totais de frota, alugueis ativos e receita
-- Cadastro, edicao e remocao de veiculos
+- Dashboard com totais de frota, aluguéis ativos e receita
+- Cadastro, edição e remoção de veículos
 - Cadastro e gerenciamento de clientes
-- Registro de novos alugueis
-- Processamento de devolucoes com calculo de multa por atraso
-- Relatorios de locacoes por periodo
+- Registro de novos aluguéis
+- Processamento de devoluções com cálculo de multa por atraso
+- Relatórios de locações por período
 
 **Perfil Cliente**
-- Visualizacao de veiculos disponiveis
-- Historico de alugueis proprios
-- Edicao de perfil pessoal
+- Visualização de veículos disponíveis
+- Histórico de aluguéis próprios
+- Edição de perfil pessoal
 
 ## Endpoints Principais da API
 
-| Metodo | Rota                        | Descricao                     |
-|--------|-----------------------------|-------------------------------|
-| POST   | /api/auth/login             | Autenticacao                  |
-| GET    | /api/veiculos               | Listar veiculos               |
-| POST   | /api/veiculos               | Cadastrar veiculo (admin)     |
-| GET    | /api/usuarios               | Listar usuarios (admin)       |
-| POST   | /api/alugueis               | Registrar aluguel             |
-| POST   | /api/alugueis/{id}/devolver | Processar devolucao           |
-| GET    | /api/dashboard              | Estatisticas (admin)          |
-| GET    | /api/relatorio              | Relatorio de locacoes (admin) |
+| Método | Rota                        | Descrição                      |
+|--------|-----------------------------|--------------------------------|
+| POST   | /api/auth/login             | Autenticação                   |
+| GET    | /api/veiculos               | Listar veículos                |
+| POST   | /api/veiculos               | Cadastrar veículo (admin)      |
+| GET    | /api/usuarios               | Listar usuários (admin)        |
+| POST   | /api/alugueis               | Registrar aluguel              |
+| POST   | /api/alugueis/{id}/devolver | Processar devolução            |
+| GET    | /api/dashboard              | Estatísticas (admin)           |
+| GET    | /api/relatorio              | Relatório de locações (admin)  |
 
-## Observacoes
+## Observações
 
-- O token JWT tem validade de 24 horas (configuravel em `jwt.expiration` no `application.yml`).
-- Veiculos marcados como "em manutencao" nao aparecem como disponiveis para locacao.
-- O calculo de multa por atraso e feito automaticamente no momento da devolucao com base nos dias excedentes e no valor da diaria.
+- O token JWT tem validade de 24 horas (configurável em `jwt.expiration` no `application.yml`).
+- Veículos marcados como "em manutenção" não aparecem como disponíveis para locação.
+- O cálculo de multa por atraso é feito automaticamente no momento da devolução com base nos dias excedentes e no valor da diária.
